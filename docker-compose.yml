@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+    node-app:
+        build: ./node-app
+        container_name: $APP_NAME
+        # depends_on:
+        #     - mysqldb
+        ports:
+            - ${APP_LOCAL_PORT:-8080}:${APP_DOCKER_PORT-3000}
+        volumes:
+            - ./node-app:/node-app
+            - ./.env:/node-app/.env
+
+
+    # mysqldb:
+    #     image: mysql/mysql-server:8.0
+    #     container_name: mysql_db
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+    #         MYSQL_ROOT_HOST: "%"
+    #         MYSQL_DATABASE: ${MYSQLDB_DATABASE}
+    #         # MYSQL_USER: '${DB_USERNAME}'
+    #         # MYSQL_PASSWORD: '${DB_PASSWORD}'
+    #         # MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    #     ports:
+    #         - ${MYSQLDB_LOCAL_PORT:-3307}:${MYSQLDB_DOCKER_PORT:-3306}
+
+
+    # phpmyadmin:
+    #     image: phpmyadmin/phpmyadmin
+    #     container_name: phpmyadmin
+    #     depends_on:
+    #         - mysqldb
+    #     restart: always
+    #     ports:
+    #         - ${FORWARD_PHPMYADMIN_PORT:-8081}:80
+    #     environment:
+    #         PMA_HOST: mysqldb
+    #         MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+        
