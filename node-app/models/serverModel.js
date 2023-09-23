@@ -11,7 +11,9 @@ class Server{
         this.port = process.env.APP_LOCAL_PORT || 3000;
 
         this.paths = {
-            heroes : `${urlBase}/heroes`
+            auth   : `${urlBase}/auth`,
+            heroes : `${urlBase}/heroes`,
+            users  : `${urlBase}/users`
         }
 
         //Conectar a db
@@ -43,7 +45,10 @@ class Server{
 
 
     routes(){
+        this.app.use( this.paths.auth,   require('../routes/authRoute') );
         this.app.use( this.paths.heroes, require('../routes/heroesRoute') );
+        this.app.use( this.paths.users,  require('../routes/usersRoute') );
+
     }
 
 

@@ -2,23 +2,27 @@ const { response } = require("express");
 const Hero         = require('../models/heroModel');
 
 const getHeroes = async( req, res = response ) => {
-    // const query = { state: true }
-    // const heroes = await Hero.find(query);
+    const { limit=10, from=0 } = req.query;
+    const query = { state: true }
+    const heroes = await Hero.find(query)
+        .limit(Number(limit))
+        .skip(Number(from));
 
-    res.json({ msg: 'get Heroes' })
+    res.json({
+        total:heroes.length,
+        superheroes:heroes
+    });
 }
 
 
 const getHeroById = async( req, res = response ) => {
     const { id } = req.params;
-    res.json({
-        msg: 'get Hero By ID',
-        id
-    });
+    const hero = await Hero.findById(id);
+    res.json( hero );
 }
 
 
-const postHeroes = async( req, res = response ) => {
+const postHero = async( req, res = response ) => {
 
     const {
         superhero,
@@ -29,7 +33,7 @@ const postHeroes = async( req, res = response ) => {
         alt_img = 'no-avatar.jpg'
     } = req.body;
 
-    const hero = new Hero(
+    const heroCreated = new Hero(
         {
             superhero:superhero.toUpperCase(),
             publisher,
@@ -40,26 +44,32 @@ const postHeroes = async( req, res = response ) => {
         }
     );
 
-    await hero.save();
+    await heroCreated.save();
 
     res.json({
-        hero
+        heroCreated
     });
 }
 
 
-const putHeroes = async( req, res = response ) => {
+const putHero = async( req, res = response ) => {
     const { id } = req.params;
     const {_id, state, __v, ...resto} = req.body;
-    await Hero.findByIdAndUpdate( id, resto );
-    const heroUpdated = await Hero.findById(id);
-    res.json({ heroUpdated });
+    const heroUpdated = await Hero.findByIdAndUpdate( id, resto, {new:true} );
+    res.json( heroUpdated );
 }
 
+
+const deleteHero = async( req, res=response ) => {
+    const { id } = req.params;
+    const deletedHero =  await Hero.findByIdAndUpdate( id, {state:false}, {new:true} );
+    res.json( deletedHero );
+}
 
 module.exports = {
     getHeroes,
     getHeroById,
-    postHeroes,
-    putHeroes,
+    postHero,
+    putHero,
+    deleteHero,
 }

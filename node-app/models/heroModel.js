@@ -22,11 +22,6 @@ const HeroSchema = Schema({
         type : String,
     },
 
-    state: {
-        type   : Boolean,
-        default: true
-    },
-
     characters:{
         type: String
     },
@@ -34,14 +29,19 @@ const HeroSchema = Schema({
     alt_img:{
         type: String,
         default: 'no-avatar.jpg'
-    }
+    },
+
+    state: {
+        type   : Boolean,
+        default: true
+    },
 });
 
 
 HeroSchema.methods.toJSON = function(){
-    const { __v, ...user } = this.toObject();
+    const { __v, ...hero } = this.toObject();
     // user.uid = _id;
-    return user;
+    return hero;
 }
 
 module.exports = model('Heroe', HeroSchema);

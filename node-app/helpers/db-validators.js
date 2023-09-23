@@ -1,4 +1,4 @@
-const { Hero, Publisher } = require("../models")
+const { Hero, Publisher, User } = require("../models")
 
 const existsSuperhero = async( superhero='' ) => {
 
@@ -22,8 +22,23 @@ const existsHeroById = async( id ) => {
     if( !heroById ) throw new Error(`El id ${id}, no existe`);
 }
 
+
+const existsUserById = async( id ) => {
+    const userById = await User.findById(id);
+    if( !userById ) throw new Error(`El id ${id}, no existe`);
+}
+
+
+const existEmail = async( email = '' ) => {
+    const emailDB = await User.findOne({ email });
+    if( emailDB )
+        throw new Error(`El email: ${ email }, ya esta registrado`);
+}
+
 module.exports = {
     existsSuperhero,
     isValidPublisher,
-    existsHeroById
+    existsHeroById,
+    existsUserById,
+    existEmail
 }
