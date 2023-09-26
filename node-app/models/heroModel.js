@@ -8,10 +8,15 @@ const HeroSchema = Schema({
         unique   : true
     },
 
+    // publisher:{
+    //     type     : String,
+    //     required : [true, 'El publisher es obligatorio'],
+    // },
+
     publisher:{
-        type     : String,
-        required : [true, 'El publisher es obligatorio'],
-        // enum     : ['Marvel Comics', 'DC Comics']
+        type: Schema.Types.ObjectId,
+        ref      : 'Publisher',
+        required : true
     },
 
     alterEgo:{
@@ -29,6 +34,12 @@ const HeroSchema = Schema({
     alt_img:{
         type: String,
         default: 'no-avatar.jpg'
+    },
+
+    created_by:{
+        type     : Schema.Types.ObjectId,
+        ref      : 'User',
+        required : true
     },
 
     state: {

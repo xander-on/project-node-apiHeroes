@@ -23,6 +23,14 @@ const existsHeroById = async( id ) => {
 }
 
 
+//todo existCategoryById
+
+const existsPublisherById = async( id ) => {
+    const publisherOfDB =  await Publisher.findById( id );
+    if( !publisherOfDB ) throw new Error(`El id del publisher no existe ${ id }`)
+}
+
+
 const existsUserById = async( id ) => {
     const userById = await User.findById(id);
     if( !userById ) throw new Error(`El id ${id}, no existe`);
@@ -40,5 +48,6 @@ module.exports = {
     isValidPublisher,
     existsHeroById,
     existsUserById,
-    existEmail
+    existEmail,
+    existsPublisherById
 }

@@ -5,6 +5,8 @@ const getHeroes = async( req, res = response ) => {
     const { limit=10, from=0 } = req.query;
     const query = { state: true }
     const heroes = await Hero.find(query)
+        .populate('publisher', 'name')
+        .populate('created_by', 'name')
         .limit(Number(limit))
         .skip(Number(from));
 
@@ -17,7 +19,10 @@ const getHeroes = async( req, res = response ) => {
 
 const getHeroById = async( req, res = response ) => {
     const { id } = req.params;
-    const hero = await Hero.findById(id);
+    const hero = await Hero.findById(id)
+    .populate('publisher', 'name')
+    .populate('created_by', 'name');
+
     res.json( hero );
 }
 
@@ -30,7 +35,8 @@ const postHero = async( req, res = response ) => {
         alterEgo,
         first_appearance='no date',
         characters = 'no characters',
-        alt_img = 'no-avatar.jpg'
+        alt_img = 'no-avatar.jpg',
+        created_by,
     } = req.body;
 
     const heroCreated = new Hero(
@@ -40,13 +46,14 @@ const postHero = async( req, res = response ) => {
             alterEgo,
             first_appearance,
             characters,
-            alt_img
+            alt_img,
+            created_by: req.user._id
         }
     );
 
     await heroCreated.save();
 
-    res.json({
+    res.status(201).json({
         heroCreated
     });
 }

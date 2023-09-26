@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { check } = require('express-validator');
+const { check }  = require('express-validator');
 
 const {
     getHeroes,
@@ -10,15 +10,24 @@ const {
 } = require('../controllers/heroesControllers');
 
 const { validarCampos } = require('../middlewares/validar-campos');
-const { existsSuperhero, isValidPublisher, existsHeroById } = require('../helpers');
+
+const {
+    existsSuperhero,
+    isValidPublisher,
+    existsHeroById,
+    existsPublisherById
+} = require('../helpers');
+const { validarJWT } = require('../middlewares');
 
 
 const router = Router();
 
 const validatorPostHero = [
+    validarJWT,
     check('superhero', 'El campo superhero es obligatorio').not().isEmpty(),
     check('superhero').custom( existsSuperhero ),
-    check('publisher').custom( isValidPublisher ),
+    check('publisher', 'No es un id de mongo').isMongoId(),
+    check('publisher').custom( existsPublisherById ),
     validarCampos,
 ];
 
@@ -42,11 +51,11 @@ const validatorDeleteHero = [
     validarCampos,
 ];
 
-router.get('/',     getHeroes);
-router.get('/:id',  validatorGetHeroById, getHeroById);
-router.put('/:id',  validatorPutHero,    putHero);
-router.post('/',    validatorPostHero,   postHero);
-router.delete('/:id', validatorDeleteHero, deleteHero);
+router.get('/',       getHeroes);
+router.get('/:id',    validatorGetHeroById, getHeroById);
+router.post('/',      validatorPostHero,    postHero);
+router.put('/:id',    validatorPutHero,     putHero);
+router.delete('/:id', validatorDeleteHero,  deleteHero);
 
 
 
