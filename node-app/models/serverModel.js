@@ -1,6 +1,8 @@
-const express = require('express');
-const cors    = require('cors');
+const express   = require('express');
+const cors       = require('cors');
+const fileUpload = require('express-fileupload');
 const { dbConnection } = require('../database/config');
+
 
 const urlBase = '/heroes-api/v1';
 
@@ -11,9 +13,10 @@ class Server{
         this.port = process.env.APP_LOCAL_PORT || 3000;
 
         this.paths = {
-            auth   : `${urlBase}/auth`,
-            heroes : `${urlBase}/heroes`,
-            users  : `${urlBase}/users`
+            auth    : `${urlBase}/auth`,
+            heroes  : `${urlBase}/heroes`,
+            users   : `${urlBase}/users`,
+            uploads : `${urlBase}/uploads`
         }
 
         //Conectar a db
@@ -41,6 +44,12 @@ class Server{
 
         //Directorio publico
         this.app.use( urlBase, express.static('public') );
+
+        this.app.use( fileUpload({
+            useTempFiles    :true,
+            tempFileDir     : '/tmp/',
+            createParentPath: true
+        }))
     }
 
 
@@ -48,7 +57,8 @@ class Server{
         this.app.use( this.paths.auth,   require('../routes/authRoute') );
         this.app.use( this.paths.heroes, require('../routes/heroesRoute') );
         this.app.use( this.paths.users,  require('../routes/usersRoute') );
-
+        //todo search
+        this.app.use( this.paths.uploads, require('../routes/uploads'));
     }
 
 
