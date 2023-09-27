@@ -23,8 +23,6 @@ const existsHeroById = async( id ) => {
 }
 
 
-//todo existCategoryById
-
 const existsPublisherById = async( id ) => {
     const publisherOfDB =  await Publisher.findById( id );
     if( !publisherOfDB ) throw new Error(`El id del publisher no existe ${ id }`)
@@ -43,11 +41,23 @@ const existEmail = async( email = '' ) => {
         throw new Error(`El email: ${ email }, ya esta registrado`);
 }
 
+
+const isValidCollection = ( collection= '', collections=[] ) => {
+
+    const includesCollection = collections.includes( collection );
+    if( !includesCollection ){
+        throw new Error( `La colección '${ collection }' no es permitida, solo [${ collections}]`);
+    }
+
+    return true;
+}
+
 module.exports = {
     existsSuperhero,
     isValidPublisher,
     existsHeroById,
     existsUserById,
     existEmail,
-    existsPublisherById
+    existsPublisherById,
+    isValidCollection
 }
