@@ -114,8 +114,52 @@ const updateImageCloudinary = async( req, res=response ) => {
     res.json( model );
 }
 
+
+const getImage = async( req, res=response ) => {
+
+    const { collection, id } = req.params;
+    let model;
+
+    switch( collection ){
+        case 'users':
+            model = await User.findById(id);
+            if( !model ){
+                return res.status(400).json({
+                    msg: `No existe un usuario con el id ${id}`
+                });
+            }
+            break;
+
+        case 'heroes':
+            model = await Hero.findById(id);
+            if( !model ){
+                return res.status(400).json({
+                    msg: `No existe un heroe con el id ${id}`
+                });
+            }
+            break;
+
+        default:
+            return res.status(500).json({ msg: 'Se me olvido validar esto'});
+    }
+
+    if( model.alt_img ){
+        // const pathImage = path.join(__dirname, '../uploads', collection, model.alt_img );
+        // if( fs.existsSync(pathImage) ) return res.sendFile( pathImage );
+
+        //ver imagen de cloudinary haciendo redirect
+        const pathImage = model.alt_img;
+        return res.redirect( pathImage );
+    }
+
+    //si no existe la imagen envia un default image
+    const pathImage = path.join(__dirname, '../assets/no-image.jpg');
+    res.sendFile( pathImage );
+}
+
 module.exports = {
     postImage,
     updateImage,
-    updateImageCloudinary
+    updateImageCloudinary,
+    getImage
 }
