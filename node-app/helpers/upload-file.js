@@ -8,9 +8,6 @@ const uploadFile = ( files, extensionesValidas=extensionesImg, carpeta='' ) => {
 
     return new Promise( ( resolve, reject ) => {
 
-        // const { archivo } = files;
-        if( !files ) return reject( `no hay archivos que cargar` );
-
         const archivos      = Object.values(files);
         const nombreCortado =  archivos[0].name.split('.');
         // const nombreCortado =  archivo.name.split('.');
