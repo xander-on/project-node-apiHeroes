@@ -32,7 +32,7 @@ const postHero = async( req, res = response ) => {
     const {
         superhero,
         publisher,
-        alterEgo,
+        alter_ego,
         first_appearance='no date',
         characters = 'no characters',
         alt_img = 'no-avatar.jpg',
@@ -43,7 +43,7 @@ const postHero = async( req, res = response ) => {
         {
             superhero:superhero.toUpperCase(),
             publisher,
-            alterEgo,
+            alter_ego,
             first_appearance,
             characters,
             alt_img,
@@ -53,9 +53,11 @@ const postHero = async( req, res = response ) => {
 
     await heroCreated.save();
 
-    res.status(201).json({
-        heroCreated
-    });
+    // res.status(201).json({
+    //     heroCreated
+    // });
+
+    res.status(201).json(heroCreated);
 }
 
 
