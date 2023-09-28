@@ -5,20 +5,23 @@ const { User } = require("../models");
 
 const getUsers = async(req, res=response) => {
 
+    const { limit=10, from=0 } = req.query;
+    const query = { state: true }
+    const users = await User.find(query)
+        .limit(Number(limit))
+        .skip(Number(from));
+
     res.json({
-        msg:'get users'
+        total:users.length,
+        superheroes:users
     });
 }
 
 
 const getUserById = async( req, res=response ) => {
-
     const { id } = req.params;
-
-    res.json({
-        msg: 'get user by id',
-        id
-    });
+    const user   = await User.findById(id);
+    res.json(user);
 }
 
 

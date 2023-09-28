@@ -10,7 +10,7 @@ const existsSuperhero = async( superhero='' ) => {
 
 const isValidPublisher = async( publisher = '' ) => {
     if( publisher !== '' ){
-        const  existsPublisher =  await Publisher.findOne({ name:publisher })
+        const  existsPublisher =  await Publisher.findById(publisher);
         if( !existsPublisher )
             throw new Error(`El publisher '${publisher}' no puede ser usado`)
     }

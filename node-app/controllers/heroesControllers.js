@@ -10,10 +10,10 @@ const getHeroes = async( req, res = response ) => {
         .limit(Number(limit))
         .skip(Number(from));
 
-    res.json({
-        total:heroes.length,
-        superheroes:heroes
-    });
+    res.json(
+        // total:heroes.length,
+        heroes
+    );
 }
 
 

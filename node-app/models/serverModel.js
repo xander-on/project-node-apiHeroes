@@ -13,10 +13,11 @@ class Server{
         this.port = process.env.APP_LOCAL_PORT || 3000;
 
         this.paths = {
-            auth    : `${urlBase}/auth`,
-            heroes  : `${urlBase}/heroes`,
-            users   : `${urlBase}/users`,
-            uploads : `${urlBase}/uploads`
+            auth       : `${urlBase}/auth`,
+            heroes     : `${urlBase}/heroes`,
+            users      : `${urlBase}/users`,
+            publishers : `${urlBase}/publishers`,
+            uploads    : `${urlBase}/uploads`
         }
 
         //Conectar a db
@@ -54,9 +55,12 @@ class Server{
 
 
     routes(){
-        this.app.use( this.paths.auth,   require('../routes/authRoute') );
-        this.app.use( this.paths.heroes, require('../routes/heroesRoute') );
-        this.app.use( this.paths.users,  require('../routes/usersRoute') );
+        this.app.use( this.paths.auth,       require('../routes/authRoute') );
+        this.app.use( this.paths.heroes,     require('../routes/heroesRoute') );
+        this.app.use( this.paths.users,      require('../routes/usersRoute') );
+        this.app.use( this.paths.publishers, require('../routes/publishersRoute') );
+
+
         //todo search
         this.app.use( this.paths.uploads, require('../routes/uploads'));
     }

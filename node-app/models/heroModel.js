@@ -19,7 +19,7 @@ const HeroSchema = Schema({
         required : true
     },
 
-    alterEgo:{
+    alter_ego:{
         type : String,
     },
 
@@ -57,13 +57,3 @@ HeroSchema.methods.toJSON = function(){
 
 module.exports = model('Heroe', HeroSchema);
 
-
-// {
-//     "id": "2zaa1_V",
-//     "superhero": "no vale2",
-//     "publisher": "Marvel Comics",
-//     "alter_ego": "no vale 2",
-//     "first_appearance": "sdfs",
-//     "characters": "sdfs",
-//     "alt_img": "https://img.freepik.com/vector-gratis/superheroe-parado-frente-rayos-sol_603843-1871.jpg"
-// }
