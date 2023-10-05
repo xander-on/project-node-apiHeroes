@@ -1,19 +1,24 @@
 const { response } = require("express");
 const Hero         = require('../models/heroModel');
+const { nextPrevUrlGenerator } = require("../helpers/urls-generator");
 
 const getHeroes = async( req, res = response ) => {
-    const { limit=12, from=0 } = req.query;
+    const { limit=12, offset=0 } = req.query;
     const query = { state: true }
     const totalHeroes = await Hero.countDocuments(query);
     const heroes = await Hero.find(query)
         .populate('publisher', 'name')
         .populate('created_by', 'name')
         .limit(Number(limit))
-        .skip(Number(from));
+        .skip(Number(offset));
+
+    const { next, prev } = nextPrevUrlGenerator(offset, limit, totalHeroes);
 
     res.json({
         total:totalHeroes,
-        heroes
+        next: next,
+        prev: prev,
+        results:heroes
     });
 }
 
@@ -53,10 +58,6 @@ const postHero = async( req, res = response ) => {
     );
 
     await heroCreated.save();
-
-    // res.status(201).json({
-    //     heroCreated
-    // });
 
     res.status(201).json(heroCreated);
 }

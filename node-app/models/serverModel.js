@@ -4,7 +4,7 @@ const fileUpload = require('express-fileupload');
 const { dbConnection } = require('../database/config');
 
 
-const urlBase = '/heroes-api/v1';
+const urlBase = '/api-heroes/v1';
 
 class Server{
 
