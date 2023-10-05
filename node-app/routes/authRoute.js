@@ -5,14 +5,13 @@ const { validarCampos } = require("../middlewares/validar-campos");
 
 
 const validatorsLogin = [
-    check('email', 'El correo es obligatorio').isEmail(),
+    check('email', 'No es un correo valido').isEmail(),
     check('password', 'La contrasena es obligatoria').not().isEmpty(),
     validarCampos
 ];
 
 const router = Router();
 
-router.post('/login', validatorsLogin, login)
-
+router.post('/login', validatorsLogin, login);
 
 module.exports = router;

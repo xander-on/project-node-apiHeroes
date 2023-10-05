@@ -8,10 +8,6 @@ const HeroSchema = Schema({
         unique   : true
     },
 
-    // publisher:{
-    //     type     : String,
-    //     required : [true, 'El publisher es obligatorio'],
-    // },
 
     publisher:{
         type: Schema.Types.ObjectId,

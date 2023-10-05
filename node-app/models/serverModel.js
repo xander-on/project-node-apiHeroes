@@ -17,6 +17,7 @@ class Server{
             heroes     : `${urlBase}/heroes`,
             users      : `${urlBase}/users`,
             publishers : `${urlBase}/publishers`,
+            searchs    : `${urlBase}/searchs`,
             uploads    : `${urlBase}/uploads`
         }
 
@@ -62,7 +63,8 @@ class Server{
 
 
         //todo search
-        this.app.use( this.paths.uploads, require('../routes/uploads'));
+        this.app.use( this.paths.searchs, require('../routes/searchsRoute') );
+        this.app.use( this.paths.uploads, require('../routes/uploadsRoute'));
     }
 
 

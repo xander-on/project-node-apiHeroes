@@ -15,7 +15,7 @@ const generarJWT = ( uid = '' ) => {
         }
 
         jwt.sign( payload, process.env.SECRETORPUBLICKEY, {
-            expiresIn:'1h'
+            expiresIn:'4h'
         }, jwtCallback);
     });
 

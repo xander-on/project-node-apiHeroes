@@ -2,18 +2,19 @@ const { response } = require("express");
 const Hero         = require('../models/heroModel');
 
 const getHeroes = async( req, res = response ) => {
-    const { limit=10, from=0 } = req.query;
+    const { limit=12, from=0 } = req.query;
     const query = { state: true }
+    const totalHeroes = await Hero.countDocuments(query);
     const heroes = await Hero.find(query)
         .populate('publisher', 'name')
         .populate('created_by', 'name')
         .limit(Number(limit))
         .skip(Number(from));
 
-    res.json(
-        // total:heroes.length,
+    res.json({
+        total:totalHeroes,
         heroes
-    );
+    });
 }
 
 
@@ -43,9 +44,9 @@ const postHero = async( req, res = response ) => {
         {
             superhero:superhero.toUpperCase(),
             publisher,
-            alter_ego,
-            first_appearance,
-            characters,
+            alter_ego:alter_ego.toUpperCase(),
+            first_appearance:first_appearance.toUpperCase(),
+            characters:characters.toUpperCase(),
             alt_img,
             created_by: req.user._id
         }
@@ -63,8 +64,27 @@ const postHero = async( req, res = response ) => {
 
 const putHero = async( req, res = response ) => {
     const { id } = req.params;
-    const {_id, state, __v, ...resto} = req.body;
-    const heroUpdated = await Hero.findByIdAndUpdate( id, resto, {new:true} );
+    const {_id, state, __v,
+        superhero,
+        publisher,
+        alter_ego,
+        characters,
+        alt_img,
+        first_appearance
+    } = req.body;
+
+    const heroToUpdate = {
+        superhero:superhero.toUpperCase(),
+        publisher,
+        alter_ego:alter_ego.toUpperCase(),
+        first_appearance:first_appearance.toUpperCase(),
+        characters:characters.toUpperCase(),
+        alt_img,
+    }
+
+    console.log(heroToUpdate);
+
+    const heroUpdated = await Hero.findByIdAndUpdate( id, heroToUpdate, {new:true} );
     res.json( heroUpdated );
 }
 
